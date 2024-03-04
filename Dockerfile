@@ -5,7 +5,7 @@
 # DON'T SELLING/BUYING THIS DOCKER TO GET MONEY.
 # 
 
-FROM ubuntu:22.04
+FROM ubuntu:latest
 
 MAINTAINER Hadad <hadad@linuxmail.org>
 LABEL maintainer="Hadad <hadad@linuxmail.org>"
@@ -47,6 +47,11 @@ RUN apt-get install sudo bc bash ccache git-core git-lfs gnupg \
 		    dos2unix libxml-simple-perl default-jdk \
 		    default-jre -q -y
 
+RUN git config --global user.name "user"
+RUN git config --global user.email "user@mail.com"
+RUN git config --global color.ui true
+RUN git config --global http.postBuffer 2147483648
+
 RUN git clone https://github.com/akhilnarang/scripts
 RUN sudo bash scripts/setup/android_build_env.sh
 RUN rm -rf scripts
@@ -55,10 +60,9 @@ RUN git clone https://github.com/ShivamKumarJha/android_tools
 RUN sudo bash android_tools/setup.sh
 RUN rm -rf android_tools
 
-RUN git config --global user.name "user"
-RUN git config --global user.email "user@mail.com"
-RUN git config --global color.ui true
-RUN git config --global http.postBuffer 2147483648
+RUN git clone https://github.com/AndroidDumps/dumpyara
+RUN sudo bash dumpyara/setup.sh
+RUN rm -rf dumpyara
 
 RUN apt-get clean --dry-run
 
