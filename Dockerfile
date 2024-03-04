@@ -51,6 +51,10 @@ RUN git clone https://github.com/akhilnarang/scripts
 RUN sudo bash scripts/setup/android_build_env.sh
 RUN rm -rf scripts
 
+RUN git clone https://github.com/ShivamKumarJha/android_tools
+RUN sudo bash android_tools/setup.sh
+RUN rm -rf android_tools
+
 RUN git config --global user.name "user"
 RUN git config --global user.email "user@mail.com"
 RUN git config --global color.ui true
