@@ -18,12 +18,15 @@ ENV LC_ALL en_US.UTF-8
 ENV LANG C.UTF-8
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN sudo fallocate -l 8G
+RUN sudo fallocate -l 8G /swapfile
+RUN ls -lh /swapfile
 RUN sudo chmod 600 /swapfile
 RUN sudo mkswap /swapfile
 RUN sudo swapon /swapfile
+RUN sudo swapon --show
 RUN sudo cp /etc/fstab /etc/fstab.bak
 RUN echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+RUN free -h
 
 WORKDIR /root
 
