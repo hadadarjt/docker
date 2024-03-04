@@ -2,7 +2,7 @@ name: Android Open Source Project
 on:
   push:
     branches:
-      - master
+      - swap
   schedule:
     - cron: '0 23 * * *'
 
@@ -25,4 +25,4 @@ jobs:
         file: ./Dockerfile
         platforms: linux/amd64
         push: true
-        tags: hadadrjt/aosp:latest
+        tags: hadadrjt/aosp:swap
