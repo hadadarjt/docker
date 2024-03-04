@@ -5,7 +5,7 @@
 # DON'T SELLING/BUYING THIS DOCKER TO GET MONEY.
 # 
 
-FROM hadadrjt/ubuntu:latest
+FROM hadadrjt/aosp:latest
 
 MAINTAINER Hadad <hadad@linuxmail.org>
 LABEL maintainer="Hadad <hadad@linuxmail.org>"
