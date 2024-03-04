@@ -47,6 +47,10 @@ RUN apt-get install sudo bc bash ccache git-core git-lfs gnupg \
 		    dos2unix libxml-simple-perl default-jdk \
 		    default-jre -q -y
 
+RUN git clone https://github.com/akhilnarang/scripts
+RUN sudo bash scripts/setup/android_build_env.sh
+RUN rm -rf scripts
+
 RUN git config --global user.name "user"
 RUN git config --global user.email "user@mail.com"
 RUN git config --global color.ui true
