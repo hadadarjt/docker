@@ -64,6 +64,14 @@ RUN git clone https://github.com/AndroidDumps/dumpyara
 RUN sudo bash dumpyara/setup.sh
 RUN rm -rf dumpyara
 
+RUN wget https://raw.githubusercontent.com/usmanmughalji/gdriveupload/master/gdrive
+RUN chmod +x gdrive
+RUN sudo install gdrive /usr/local/bin/gdrive
+RUN find gdrive -delete
+RUN apt-get install gcc-arm-linux-gnueabihf gcc-aarch64-linux-gnu -q -y
+RUN pip install gdown
+RUN sudo apt-get install rclone -q -y
+
 RUN apt-get clean --dry-run
 
 WORKDIR /root
