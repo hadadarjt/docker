@@ -18,14 +18,10 @@ ENV LC_ALL en_US.UTF-8
 ENV LANG C.UTF-8
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN sudo fallocate -l 8G /swapfile
-RUN ls -lh /swapfile
-RUN sudo chmod 600 /swapfile
-RUN sudo mkswap /swapfile
-RUN sudo swapon /swapfile
-RUN sudo swapon --show
-RUN sudo cp /etc/fstab /etc/fstab.bak
-RUN echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+RUN zfs create -V 8G -b $(getconf PAGESIZE) -o logbias=throughput -o sync=always -o primarycache=metadata -o com.sun:auto-snapshot=false rpool/swap
+RUN mkswap -f /dev/zvol/rpool/swap
+RUN swapon /dev/zvol/rpool/swap
+RUN echo '/dev/zvol/rpool/swap none swap discard 0 0' | sudo tee -a /etc/fstab
 RUN free -h
 
 WORKDIR /root
