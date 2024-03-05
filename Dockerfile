@@ -7,22 +7,17 @@
 
 FROM ubuntu:latest
 
-MAINTAINER Hadad <hadad@linuxmail.org>
 LABEL maintainer="Hadad <hadad@linuxmail.org>"
 
+ENV USER root
 ENV HOSTNAME=android-build-team
 ENV PATH /usr/local/bin:$PATH
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US:en
-ENV LC_ALL en_US.UTF-8
-ENV LANG C.UTF-8
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update -y
 RUN apt-get full-upgrade -y
 RUN apt-get install tzdata locales --no-install-recommends -y
 RUN ln -fs /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
-RUN locale-gen en_US.UTF-8
 RUN dpkg-reconfigure --frontend noninteractive tzdata
 
 RUN apt-get install sudo bc bash ccache git-core git-lfs gnupg \
@@ -37,7 +32,7 @@ RUN apt-get install sudo bc bash ccache git-core git-lfs gnupg \
 		    libsqlite3-dev libxslt-dev schedtool \
 		    software-properties-common ca-certificates \
 		    netbase tk-dev uuid-dev libpq-dev libtinfo5 \
-		    lzop libncurses5 wget aria2 rclone screen libc6 \
+		    lzop libncurses5 wget aria2 screen libc6 \
 		    libc6-dev neofetch android-tools-mkbootimg \
 		    figlet p7zip-full lib32ncurses5-dev liblzma-dev \
 		    libncursesw5-dev dos2unix libxml-simple-perl \
@@ -73,6 +68,12 @@ RUN pip install gdown
 RUN sudo apt-get install rclone -q -y
 
 RUN apt-get clean --dry-run
+
+ENV USE_CCACHE 1
+ENV CCACHE_SIZE 50G
+ENV CCACHE_EXEC /usr/bin/ccache
+ENV ANDROID_JACK_VM_ARGS "-Dfile.encoding=UTF-8 -XX:+TieredCompilation -Xmx4G"
+RUN export ANDROID_JACK_VM_ARGS="-Xmx4g -Dfile.encoding=UTF-8 -XX:+TieredCompilation"
 
 WORKDIR /root
 
