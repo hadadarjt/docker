@@ -2,16 +2,14 @@ name: Android Open Source Project
 on:
   push:
     branches:
-      - master
+      - ubuntu-20.04
   schedule:
     - cron: '0 23 * * *'
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
+    runs-on: ubuntu-20.04
+    permissions: write-all
 
     steps:
     - uses: actions/checkout@v2
@@ -28,4 +26,4 @@ jobs:
         file: ./Dockerfile
         platforms: linux/amd64
         push: true
-        tags: hadadrjt/aosp:latest
+        tags: hadadrjt/aosp:ubuntu-20.04

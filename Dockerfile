@@ -5,12 +5,11 @@
 # DON'T SELLING/BUYING THIS DOCKER TO GET MONEY.
 # 
 
-FROM ubuntu:latest
+FROM ubuntu:20.04
 
 LABEL maintainer="Hadad <hadad@linuxmail.org>"
 
 ENV USER root
-ENV HOSTNAME=android-build-team
 ENV PATH /usr/local/bin:$PATH
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -40,16 +39,13 @@ RUN apt-get install sudo bc bash ccache git-core git-lfs gnupg \
 		    lib32z1-dev libgl1-mesa-dev libxml2-utils \
 		    xsltproc fontconfig imagemagick patchelf apktool \
 		    dos2unix libxml-simple-perl default-jdk \
-		    default-jre -q -y
+		    default-jre gcc-arm-linux-gnueabihf \
+		    gcc-aarch64-linux-gnu -q -y
 
-RUN git config --global user.name "user"
-RUN git config --global user.email "user@mail.com"
+RUN git config --global user.name "hadad"
+RUN git config --global user.email "hadad@linuxmail.org"
 RUN git config --global color.ui true
 RUN git config --global http.postBuffer 2147483648
-
-RUN git clone https://github.com/akhilnarang/scripts
-RUN sudo bash scripts/setup/android_build_env.sh
-RUN rm -rf scripts
 
 RUN git clone https://github.com/ShivamKumarJha/android_tools
 RUN sudo bash android_tools/setup.sh
@@ -59,21 +55,19 @@ RUN git clone https://github.com/AndroidDumps/dumpyara
 RUN sudo bash dumpyara/setup.sh
 RUN rm -rf dumpyara
 
+RUN git clone https://github.com/akhilnarang/scripts
+RUN sudo bash scripts/setup/android_build_env.sh
+RUN rm -rf scripts
+
 RUN wget https://raw.githubusercontent.com/usmanmughalji/gdriveupload/master/gdrive
 RUN chmod +x gdrive
 RUN sudo install gdrive /usr/local/bin/gdrive
 RUN find gdrive -delete
-RUN apt-get install gcc-arm-linux-gnueabihf gcc-aarch64-linux-gnu -q -y
+RUN apt-get install  -q -y
 RUN pip install gdown
 RUN sudo apt-get install rclone -q -y
 
-RUN apt-get clean --dry-run
-
-ENV USE_CCACHE 1
-ENV CCACHE_SIZE 50G
-ENV CCACHE_EXEC /usr/bin/ccache
-ENV ANDROID_JACK_VM_ARGS "-Dfile.encoding=UTF-8 -XX:+TieredCompilation -Xmx4G"
-RUN export ANDROID_JACK_VM_ARGS="-Xmx4g -Dfile.encoding=UTF-8 -XX:+TieredCompilation"
+RUN sudo apt autoremove -q -y
 
 WORKDIR /root
 
